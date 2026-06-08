@@ -1,3 +1,9 @@
+// This code is part of the ALICE FOCAL project, which is a forward calorimeter for the ALICE experiment at CERN. The code is written in C++ and uses the ROOT framework for data analysis and the FastJet library for jet reconstruction. The purpose of this code is to analyze jets in a grid of events, perform jet matching between reconstructed jets and truth-level jets, and store the results in a ROOT file for further analysis.
+
+
+
+
+// dépendances, gestion de fichiers, données, etc
 #include "TFile.h"
 #include "TTree.h"
 #include "TClonesArray.h"
@@ -11,6 +17,8 @@
 #include "TROOT.h"
 #include "Riostream.h"
 
+
+// bibliothèques (ALICE, MC, AliFOCALCluster, FASTJET)
 #include "AliRunLoader.h"
 #include "AliStack.h"
 #include "AliFOCALCluster.h"
@@ -24,21 +32,26 @@
 using std::cout;
 using std::endl;
 
-Float_t eta(TParticle *); // declaration, implementation at end of file
-Float_t phi(TParticle *);
+// Forward declarations
+Float_t eta(TParticle *); // Float_T = float, TParticle is a class from ROOT representing a particle in the event generator stack, and this function will calculate the pseudorapidity (eta) of the particle based on its momentum components.
+Float_t phi(TParticle *); // This function will calculate the azimuthal angle (phi) of the particle based on its momentum components.
 
-void GetMomentum(TLorentzVector &p, const Float_t *vertex, AliFOCALCluster *foClust, Float_t mass);
+void GetMomentum(TLorentzVector &p, const Float_t *vertex, AliFOCALCluster *foClust, Float_t mass); 
+// This function will calculate the momentum of a cluster (foClust) and store it in a TLorentzVector (p). It takes into account the position of the cluster, the vertex position, and an optional mass parameter.
+// & = reference, * = pointer, const = constant (cannot be modified)
+// TLorentzVector is a class from ROOT representing a 4-momentum, AliFOCALCluster is a class representing a cluster in the FOCAL detector.
+
 void GetGeometricalMatchingLevel(fastjet::PseudoJet& jet1, fastjet::PseudoJet& jet2, Double_t &d);
-void DoJetMatching(std::vector<fastjet::PseudoJet> &jetArray1, std::vector<fastjet::PseudoJet> &jetArray2);
+// This function will calculate the geometrical distance (d) between two jets (jet1 and jet2) in the eta-phi space.
+// fastjet::PseudoJet is a class from the FastJet library representing a jet, and Double_t = double.
 
-class JetMatchingParams : public fastjet::PseudoJet::UserInfoBase
+void DoJetMatching(std::vector<fastjet::PseudoJet> &jetArray1, std::vector<fastjet::PseudoJet> &jetArray2);
+// This function will perform jet matching between two arrays of jets (jetArray1 and jetArray2) based on their distance in the eta-phi space.
+// std::vector is a C++ standard library container representing a dynamic array
+
+class JetMatchingParams : public fastjet::PseudoJet::UserInfoBase // This class will store the parameters related to jet matching, such as the indices of the matched jets and their distances. It inherits from fastjet::PseudoJet::UserInfoBase, which allows us to attach this information to each jet in the FastJet framework. public means that the members of the class are accessible from outside the class.
 {
-public:
-	// default ctor
-	//  - index1 jet1 index
-	//  - index2 jet2 index
-	//  - d1 distance to jet1
-	//  - d2 distance to jet2
+public: // constructeur, public members can be accessed from outside the class
 	JetMatchingParams() = default;
 	JetMatchingParams(const int &index1, const int &index2, const double &distance1, const double &distance2) : mIndex1(index1), mIndex2(index2), mDistance1(distance1), mDistance2(distance2) {}
 	JetMatchingParams(JetMatchingParams &params) : mIndex1(params.index1()), mIndex2(params.index2()), mDistance1(params.distance1()), mDistance2(params.distance2()) {}
