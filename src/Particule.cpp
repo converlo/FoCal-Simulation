@@ -1,11 +1,13 @@
-#include "Particule.h"
+#include "Particule_flu.h"
 #include <iostream>
 
-Particule::Particule(double x, double y, double z, double energie, std::string type)
-    : x(x), y(y), z(z), energie(energie), type(type) {}
+Particule_flu::Particule_flu(double x, double y, double vx, double vy, double rho, double dx, double dy)
+    : x(x), y(y), vx(vx), vy(vy), rho(rho), dx(dx), dy(dy) {}
 
-void Particule::afficher() const {
-    std::cout << "Particule : " << type << std::endl;
-    std::cout << "  Position : (" << x << ", " << y << ", " << z << ") cm" << std::endl;
-    std::cout << "  Energie  : " << energie << " GeV" << std::endl;
+void Particule_flu::afficher() const {
+    std::cout << "Particule fluide" << std::endl;
+    std::cout << "  Position : (" << x << ", " << y << ") m" << std::endl;
+    std::cout << "  Vitesse  : (" << vx << ", " << vy << ") m/s" << std::endl;
+    std::cout << "  Densité  : " << rho << " g/m^2" << std::endl;
+    std::cout << "  Taille   : (" << dx << ", " << dy << ") m" << std::endl;
 }
