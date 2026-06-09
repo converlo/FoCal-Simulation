@@ -65,6 +65,10 @@ public: // constructeur, public members can be accessed from outside the class
 	double distance1() const { return mDistance1; }
 	double distance2() const { return mDistance2; }
 
+
+// pourquoi y'a deux distances une associé a chcun des deux jets je pensais qu'on rgzrdait la distance entre les deux jets pour faire le matching.
+
+
 	/// Set the indices and distance
 	void setJetIndexDistance1(int index, double distance)
 	{
@@ -84,8 +88,10 @@ protected:
 	double mDistance2 = 999; // Distance to jet2
 };
 
-class SW_JetArea : public fastjet::SelectorWorker
+class SW_JetArea : public fastjet::SelectorWorker // This class defines a custom selector for jets based on their area. It inherits from fastjet::SelectorWorker, which is a base class for defining custom selectors in the FastJet framework. The selector will pass jets that have an area greater than a specified minimum area (mMinArea).
 {
+
+// area = surfcae occupé dans l'espace de phase eta, phi par le jet, plus le jet est grand plus son area est grande, on peut faire du background subtraction en soustrayant rho*area du pt du jet, ou en faisant du jet grooming en supprimant les sous-jets qui ont une area trop petite
 public:
 	SW_JetArea(const double &minArea) : mMinArea(minArea) {}
 
