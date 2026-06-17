@@ -91,7 +91,7 @@ protected:
 class SW_JetArea : public fastjet::SelectorWorker // This class defines a custom selector for jets based on their area. It inherits from fastjet::SelectorWorker, which is a base class for defining custom selectors in the FastJet framework. The selector will pass jets that have an area greater than a specified minimum area (mMinArea).
 {
 
-// area = surfcae occupé dans l'espace de phase eta, phi par le jet, plus le jet est grand plus son area est grande, on peut faire du background subtraction en soustrayant rho*area du pt du jet, ou en faisant du jet grooming en supprimant les sous-jets qui ont une area trop petite
+// area = surface occupé dans l'espace de phase eta, phi par le jet, plus le jet est grand plus son area est grande, on peut faire du background subtraction en soustrayant rho*area du pt du jet, ou en faisant du jet grooming en supprimant les sous-jets qui ont une area trop petite
 public:
 	SW_JetArea(const double &minArea) : mMinArea(minArea) {}
 
